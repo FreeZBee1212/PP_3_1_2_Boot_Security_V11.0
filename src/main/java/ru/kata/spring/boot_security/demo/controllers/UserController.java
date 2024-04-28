@@ -42,7 +42,7 @@ public class UserController {
     }
 
     @PostMapping()
-    public String saveUser(@ModelAttribute("user") User user, @RequestParam("roles") List<Long> roleIds) {
+    public String saveUser(@ModelAttribute("user") User user, @RequestParam("roleIds") List<Long> roleIds) {
         userService.saveUser(user, roleIds);
         return "redirect:/admin/users";
     }
@@ -55,7 +55,7 @@ public class UserController {
 
 
     @PostMapping("/{id}")
-    public String updateUser(@ModelAttribute("user") User user, @RequestParam("roles") List<Long> roleIds) {
+    public String updateUser(@ModelAttribute("user") User user, @RequestParam("roleIds") List<Long> roleIds) {
         userService.updateUser(user, roleIds);
         return "redirect:/admin/users";
     }

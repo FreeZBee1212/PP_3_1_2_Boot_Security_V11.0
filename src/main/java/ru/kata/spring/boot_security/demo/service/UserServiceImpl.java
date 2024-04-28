@@ -12,6 +12,7 @@ import ru.kata.spring.boot_security.demo.model.User;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -42,10 +43,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void saveUser(User user, List<Long> roleIds) {
-        Set<Role> roles = new HashSet<>();
-        for (Long roleId : roleIds) {
-            roles.add(roleService.getRoleById(roleId));
-        }
+        Set<Role> roles = roleIds.stream()
+                .map(roleService::getRoleById)
+                .collect(Collectors.toSet());
         user.setRoles(roles);
         userRepository.save(user);
     }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.dao.UserRepository;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RegistrationService;
@@ -13,6 +14,8 @@ import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/auth")
@@ -22,12 +25,14 @@ public class AuthController {
 
     private final UserServiceImpl userService;
     private final RoleService roleService;
+    private final UserRepository userRepository;
 
     @Autowired
-    public AuthController(RegistrationService registrationService, UserServiceImpl userService, RoleService roleService) {
+    public AuthController(RegistrationService registrationService, UserServiceImpl userService, RoleService roleService, UserRepository userRepository) {
         this.registrationService = registrationService;
         this.userService = userService;
         this.roleService = roleService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/login")
@@ -45,12 +50,12 @@ public class AuthController {
     @PostMapping("/registration")
     public String registerUser(@ModelAttribute("user") @Valid User user,
                                BindingResult bindingResult,
-                               @RequestParam("roles") List<Long> roleIds) {
+                               @RequestParam("roleIds") List<Long> roleIds) {
         if (bindingResult.hasErrors()) {
             return "registration";
         }
         if (userService.isEmailUnique(user.getUsername())) {
-            userService.saveUser(user, roleIds);
+            registrationService.registration(user, roleIds);
             return "redirect:/auth/login";
         } else {
             bindingResult.rejectValue("username", "", "This username is already registered");
