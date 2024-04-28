@@ -38,7 +38,7 @@ public class AuthController {
     @GetMapping("/registration")
     public String registrationForm(Model model) {
         model.addAttribute("user", new User());
-        model.addAttribute("roles", roleService.getAllRoles()); // Передача списка ролей
+        model.addAttribute("roles", roleService.getAllRoles());
         return "registration";
     }
 
@@ -53,9 +53,8 @@ public class AuthController {
             userService.saveUser(user, roleIds);
             return "redirect:/auth/login";
         } else {
-            bindingResult.rejectValue("email", "", "This email is already registered");
+            bindingResult.rejectValue("username", "", "This username is already registered");
             return "registration";
         }
     }
-
 }

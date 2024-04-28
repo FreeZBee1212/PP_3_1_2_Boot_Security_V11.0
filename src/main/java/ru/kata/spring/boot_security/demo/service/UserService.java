@@ -15,7 +15,7 @@ public interface UserService {
 
     public void saveUser(User user, List<Long> roleIds);
 
-    public void updateUser(User updatedUser);
+    public void updateUser(User user, List<Long> roleIds);
 
     public void deleteUser(User user);
 
