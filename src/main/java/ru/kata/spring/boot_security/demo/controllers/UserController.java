@@ -40,8 +40,8 @@ public class UserController {
     }
 
     @PostMapping()
-    public String createUser(@ModelAttribute("user") User user) {
-        userService.saveUser(user);
+    public String saveUser(@ModelAttribute("user") User user, @RequestParam("roles") long[] roleIds) {
+        userService.saveUser(user, roleIds);
         return "redirect:/admin/users";
     }
 

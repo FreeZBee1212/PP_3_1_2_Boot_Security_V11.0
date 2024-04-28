@@ -13,7 +13,7 @@ public interface UserService {
 
     public User showOneUser(int id);
 
-    public void saveUser(User user);
+    public void saveUser(User user, List<Long> roleIds);
 
     public void updateUser(User updatedUser);
 
